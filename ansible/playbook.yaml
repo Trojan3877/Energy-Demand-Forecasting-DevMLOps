@@ -1,0 +1,21 @@
+---
+# ansible/playbook.yaml
+# Master playbook for Energy Demand Forecasting - DevMLOps
+# Author: Corey Leath
+
+- name: Deploy Energy Forecasting DevMLOps Stack
+  hosts: all
+  become: true
+  vars_files:
+    - group_vars/all.yaml
+
+  roles:
+    - k8s_deploy_api
+    - mlflow_deploy
+    - prometheus_grafana
+
+mkdir -p ansible
+git add ansible/playbook.yaml
+git commit -m "Add Ansible master playbook.yaml"
+git push
+
