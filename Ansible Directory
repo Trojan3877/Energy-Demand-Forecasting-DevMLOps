@@ -1,0 +1,14 @@
+ansible/
+├── inventories/
+│   ├── dev.ini
+│   ├── prod.ini
+├── playbook.yaml
+├── roles/
+│   ├── k8s_deploy_api/
+│   │   ├── tasks/main.yaml
+│   ├── mlflow_deploy/
+│   │   ├── tasks/main.yaml
+│   ├── prometheus_grafana/
+│   │   ├── tasks/main.yaml
+└── group_vars/
+    ├── all.yaml
