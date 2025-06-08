@@ -11,6 +11,19 @@
 ![Grafana](https://img.shields.io/badge/Grafana-visualized-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+
+
+<img width="404" alt="image" src="https://github.com/user-attachments/assets/2c375d72-6b7c-4a6e-babb-a6f8e20432de" />
+
+
+
+
+
+
+
+
+
+
 Production-grade **DevMLOps** pipeline for forecasting **smart grid energy demand**.  
 Built with **Airflow, DVC, Docker, Kubernetes, Helm, Ansible, MLflow, Prometheus & Grafana**, with end-to-end automation.
 
@@ -53,7 +66,7 @@ ansible-playbook ansible/playbook.yaml -i ansible/inventories/dev.ini
 
 
 
-![Uploading image.png…]()
+
 
 
 
