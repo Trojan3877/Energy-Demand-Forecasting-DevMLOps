@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mlflow-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mlflow-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./artifacts:/mlflow/artifacts
+      - ./mlflow.db:/mlflow/mlflow.db
+    environment:
+      MLFLOW_TRACKING_URI: http://localhost:5000
+    restart: always
+
+# From mlflow/ directory:
+docker-compose up -d
+
+# Access MLflow UI:
+http://localhost:5000
+
+import mlflow
+import mlflow.sklearn
+
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("Energy Forecasting Experiment")
+
+with mlflow.start_run():
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_metric("mape", 0.0432)
+    mlflow.sklearn.log_model(model, "model")
+
+git add mlflow/docker-compose.yaml
+git commit -m "Add MLflow docker-compose.yaml"
+git push
