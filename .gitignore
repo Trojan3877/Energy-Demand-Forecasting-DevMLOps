@@ -5,24 +5,31 @@ __pycache__/
 *.pyd
 *.egg-info/
 
-# Environment
+# Environments
 .venv/
 .env/
 .envrc
+
+# Jupyter
+.ipynb_checkpoints/
 
 # DVC
 .dvc/
 *.dvc
 .dvc.lock
-
-# Jupyter
-.ipynb_checkpoints/
+dvc.lock
+.cache/
+.cache/dvc/
 
 # Data (keep raw/processed dirs but ignore files)
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+
+# Models (keep dir, ignore files)
+models/*
+!models/.gitkeep
 
 # Airflow
 airflow/airflow.db
@@ -34,16 +41,13 @@ terraform/.terraform/
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 
-# Docker
+# Docker logs
 *.log
 
-# VS Code
+# VSCode
 .vscode/
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-git add .gitignore
-git commit -m "Add .gitignore"
-git push
