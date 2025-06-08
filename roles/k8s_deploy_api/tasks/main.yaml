@@ -1,0 +1,31 @@
+---
+# ansible/roles/k8s_deploy_api/tasks/main.yaml
+
+- name: Ensure Helm is installed
+  apt:
+    name: helm
+    state: present
+  become: true
+
+- name: Add Helm repo (if using external)
+  command: helm repo add energy-chart ./helm/energy-forecast-api
+  args:
+    chdir: "{{ playbook_dir }}"
+  register: helm_repo
+  failed_when: false
+
+- name: Update Helm repos
+  command: helm repo update
+
+- name: Deploy or upgrade energy-forecast-api chart
+  command: >
+    helm upgrade --install energy-forecast-api
+    ./helm/energy-forecast-api
+    --namespace default
+    --set image.tag=latest
+  args:
+    chdir: "{{ playbook_dir }}"
+
+git add ansible/roles/k8s_deploy_api/tasks/main.yaml
+git commit -m "Add Ansible role k8s_deploy_api tasks"
+git push
