@@ -1,0 +1,32 @@
+# Prometheus config - scrape energy-forecast-api metrics
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: energy-forecast-api
+      - source_labels: [__meta_kubernetes_pod_container_port_number]
+        target_label: __metrics_path__
+        regex: "8000"
+        replacement: /metrics
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+
+pip install prometheus-fastapi-instrumentator
+
+from prometheus_fastapi_instrumentator import Instrumentator
+
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
+
+mkdir -p monitoring
+git add monitoring/prometheus-config.yaml
+git commit -m "Add Prometheus scrape config for API"
+git push
