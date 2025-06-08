@@ -1,0 +1,46 @@
+---
+# ansible/roles/prometheus_grafana/tasks/main.yaml
+
+- name: Ensure Docker is installed
+  apt:
+    name: docker.io
+    state: present
+  become: true
+
+- name: Ensure docker-compose is installed
+  apt:
+    name: docker-compose
+    state: present
+  become: true
+
+- name: Copy monitoring files
+  copy:
+    src: ../../../../monitoring/prometheus-config.yaml
+    dest: /opt/monitoring/prometheus-config.yaml
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+- name: Copy Grafana dashboard
+  copy:
+    src: ../../../../monitoring/grafana-dashboard.json
+    dest: /opt/monitoring/grafana-dashboard.json
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+
+- name: Copy Docker Compose for monitoring
+  copy:
+    src: ../../../../monitoring/docker-compose.yaml
+    dest: /opt/monitoring/docker-compose.yaml
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+
+- name: Bring up Prometheus & Grafana
+  command: docker-compose up -d
+  args:
+    chdir: /opt/monitoring
+
+git add ansible/roles/prometheus_grafana/tasks/main.yaml
+git commit -m "Add Ansible role prometheus_grafana tasks"
+git push
