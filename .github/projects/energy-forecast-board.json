@@ -1,0 +1,60 @@
+{
+  "name": "Energy Demand Forecasting - DevMLOps Board",
+  "body": "Kanban board for planning and tracking the Energy Demand Forecasting - DevMLOps Capstone Project.",
+  "public": true,
+  "columns": [
+    {
+      "name": "To Do",
+      "cards": [
+        { "note": "Tune hyperparameters in train.yaml" },
+        { "note": "Add custom MAPE metric to FastAPI /metrics" },
+        { "note": "Add Prometheus + Grafana stack to K8s (Helm chart)" },
+        { "note": "Deploy to EKS / GKE" }
+      ]
+    },
+    {
+      "name": "In Progress",
+      "cards": [
+        { "note": "MLflow tracking integration in train.py" }
+      ]
+    },
+    {
+      "name": "Done",
+      "cards": [
+        { "note": "DVC pipeline scaffolded" },
+        { "note": "Airflow DAG operational" },
+        { "note": "K8s manifests created" },
+        { "note": "Helm chart scaffolded" },
+        { "note": "Monitoring configs created" },
+        { "note": "CI/CD GitHub Actions operational" }
+      ]
+    }
+  ]
+}
+
+.github/projects/energy-forecast-board.json  
+
+
+To Do:
+- Tune hyperparameters
+- Add MAPE to /metrics
+- Add Prometheus + Grafana stack
+- Deploy to cloud
+
+In Progress:
+- MLflow tracking integration
+
+Done:
+- DVC pipeline
+- Airflow DAG
+- K8s manifests
+- Helm chart
+- Monitoring
+- CI/CD
+
+after you commit
+
+mkdir -p .github/projects
+git add .github/projects/energy-forecast-board.json
+git commit -m "Add GitHub Project Board template"
+git push
