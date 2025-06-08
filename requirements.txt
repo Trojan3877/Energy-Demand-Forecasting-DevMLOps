@@ -1,0 +1,29 @@
+# Core Python libraries for Energy Demand Forecasting DevMLOps
+
+# Data manipulation
+pandas>=1.3
+numpy>=1.21
+
+# Machine Learning
+scikit-learn>=1.0
+xgboost>=1.5
+prophet>=1.1
+
+# API
+fastapi>=0.78
+uvicorn[standard]>=0.18
+
+# Workflow orchestration
+apache-airflow==2.6.3
+
+# Experiment tracking
+dvc>=2.10
+dvc-s3>=2.10
+
+# Dev tools
+pytest>=7.1
+flake8>=4.0
+
+git add requirements.txt
+git commit -m "Add base requirements.txt"
+git push
