@@ -1,0 +1,39 @@
+---
+# ansible/roles/mlflow_deploy/tasks/main.yaml
+
+- name: Ensure Docker is installed
+  apt:
+    name: docker.io
+    state: present
+  become: true
+
+- name: Ensure docker-compose is installed
+  apt:
+    name: docker-compose
+    state: present
+  become: true
+
+- name: Copy MLflow docker-compose file
+  copy:
+    src: ../../../../mlflow/docker-compose.yaml
+    dest: /opt/mlflow/docker-compose.yaml
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+
+- name: Create artifacts directory
+  file:
+    path: /opt/mlflow/artifacts
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Bring up MLflow server
+  command: docker-compose up -d
+  args:
+    chdir: /opt/mlflow
+
+git add ansible/roles/mlflow_deploy/tasks/main.yaml
+git commit -m "Add Ansible role mlflow_deploy tasks"
+git push
