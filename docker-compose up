@@ -1,0 +1,27 @@
+docker-compose up -d
+version: '3.8'
+
+services:
+  energy-forecast-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: energy-forecast-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+    restart: always
+
+# Build and run the full stack
+docker-compose up --build -d
+
+# Check running containers
+docker ps
+
+# Test API
+http://localhost:8000/docs
+
+git add docker-compose.yml
+git commit -m "Add top-level docker-compose.yml"
+git push
