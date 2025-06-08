@@ -1,0 +1,26 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: energy-forecast-api-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: energy-forecast-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+
+kubectl apply -f k8s/hpa.yaml
+kubectl get hpa
+
+git add k8s/hpa.yaml
+git commit -m "Add Kubernetes HPA (autoscaler) for API"
+git push
