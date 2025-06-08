@@ -1,93 +1,61 @@
 # Energy Demand Forecasting - DevMLOps Pipeline 🚀⚡
 
 ![CI](https://github.com/YourUsername/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml/badge.svg)
+![DVC](https://img.shields.io/badge/DVC-enabled-blue)
+![Docker Pulls](https://img.shields.io/docker/pulls/energy-forecast-api)
+![Helm](https://img.shields.io/badge/Helm-Chart-blue)
+![K8s](https://img.shields.io/badge/Kubernetes-ready-green)
+![Ansible](https://img.shields.io/badge/Ansible-automated-yellowgreen)
+![MLflow](https://img.shields.io/badge/MLflow-tracking-orange)
+![Prometheus](https://img.shields.io/badge/Prometheus-monitored-lightgrey)
+![Grafana](https://img.shields.io/badge/Grafana-visualized-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 Production-grade **DevMLOps** pipeline for forecasting **smart grid energy demand**.  
-Built with **Airflow, DVC, Docker, Kubernetes, and FastAPI**, with end-to-end automation.
+Built with **Airflow, DVC, Docker, Kubernetes, Helm, Ansible, MLflow, Prometheus & Grafana**, with end-to-end automation.
 
-### 🌎 **Real-World Impact**
-- Helps optimize energy production
-- Reduces waste & carbon footprint
-- Supports smart grid resiliency
+## 🌎 Real-World Impact
+- Helps optimize energy production  
+- Reduces waste & carbon footprint  
+- Supports smart grid resiliency  
 
-Energy-Demand-Forecasting-DevMLOps/
-├── k8s/
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── ingress.yaml
-│   ├── hpa.yaml
-├── helm/energy-forecast-api/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   ├── templates/
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       ├── ingress.yaml
-├── monitoring/
-│   ├── prometheus-config.yaml
-│   ├── grafana-dashboard.json
-├── mlflow/
-│   ├── Dockerfile
-│   ├── docker-compose.yaml
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-└── .github/projects/energy-forecast-board.json
+## ⚙️ Pipeline Architecture
+1. Data Ingestion (Airflow)  
+2. Feature Engineering  
+3. Model Training (XGBoost)  
+4. Model Evaluation  
+5. Model Registry (MLflow)  
+6. Model Serving (FastAPI + Docker + K8s)  
+7. Monitoring & Alerting (Prometheus & Grafana)  
+8. CI/CD & IaC (GitHub Actions, Terraform, Ansible)  
 
+## 🛠 Tech Stack
+- **Language:** Python 3.x  
+- **Orchestration:** Apache Airflow  
+- **Data & Experiments:** DVC, MLflow  
+- **Modeling:** scikit-learn, XGBoost, Prophet  
+- **API:** FastAPI + Uvicorn  
+- **Deploy:** Docker, Kubernetes, Helm, Ansible, Terraform  
+- **Monitoring:** Prometheus + Grafana  
+- **CI/CD:** GitHub Actions  
 
-
-
-
-
-
-
----
-
-## ⚙️ **Pipeline Architecture**
-
-1️⃣ **Data Ingestion**  
-2️⃣ **Feature Engineering**  
-3️⃣ **Model Training**  
-4️⃣ **Model Evaluation**  
-5️⃣ **Model Registry**  
-6️⃣ **Model Serving (FastAPI)**  
-7️⃣ **Monitoring & Retraining**  
-8️⃣ **CI/CD & Infrastructure as Code**
-
----
-
-## 🛠 **Tech Stack**
-
-- **Language:** Python 3.x
-- **Orchestration:** Apache Airflow
-- **Data & Experiment Tracking:** DVC
-- **Modeling:** scikit-learn, XGBoost, Prophet
-- **API:** FastAPI + Docker
-- **Deployment:** Kubernetes + Helm
-- **Monitoring:** Prometheus + Grafana
-- **Infra as Code:** Terraform
-- **CI/CD:** GitHub Actions
-
----
-
-## 🚀 **Getting Started**
-
-### Clone the repo
-
+## 🚀 Getting Started
 ```bash
 git clone https://github.com/YourUsername/Energy-Demand-Forecasting-DevMLOps.git
 cd Energy-Demand-Forecasting-DevMLOps
-
 make deps
+make airflow-up
+dvc pull
+docker-compose up -d         # for API
+cd mlflow && docker-compose up -d
+cd monitoring && docker-compose up -d
+ansible-playbook ansible/playbook.yaml -i ansible/inventories/dev.ini
 
-cd airflow
-docker-compose up -d
+
+
+![Uploading image.png…]()
 
 
 
 
 
-
-# Energy-Demand-Forecasting-DevMLOps
-Production-grade DevMLOps pipeline for smart grid energy demand forecasting. End-to-end automation with Airflow, DVC, Kubernetes, and CI/CD. Built for real-world impact
