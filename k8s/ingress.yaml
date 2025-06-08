@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: energy-forecast-api-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    # If using cert-manager for TLS:
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx  # Change if using cloud-specific ingress class
+  rules:
+    - host: energy-forecast.example.com  # Replace with your real domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-forecast-api
+                port:
+                  number: 80
+  # Optional TLS block (if using cert-manager)
+  # tls:
+  #   - hosts:
+  #       - energy-forecast.example.com
+  #     secretName: energy-forecast-tls
+
+kubectl apply -f k8s/ingress.yaml
+kubectl get ingress
+
+git add k8s/ingress.yaml
+git commit -m "Add Kubernetes ingress.yaml for API"
+git push
