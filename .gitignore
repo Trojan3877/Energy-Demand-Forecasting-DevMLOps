@@ -51,3 +51,8 @@ terraform/terraform.tfstate.backup
 .DS_Store
 Thumbs.db
 
+
+git add .gitignore
+git commit -m "Update .gitignore for DVC, Terraform, Airflow"
+git push
+
