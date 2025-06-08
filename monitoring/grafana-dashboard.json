@@ -1,0 +1,57 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "type": "dashboard",
+        "name": "Annotations & Alerts",
+        "datasource": "-- Grafana --",
+        "enable": true
+      }
+    ]
+  },
+  "title": "Energy Forecast API - Monitoring",
+  "timezone": "browser",
+  "panels": [
+    {
+      "title": "HTTP Request Duration (Latency)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=\"energy-forecast-api\"}[5m])) by (le))",
+          "legendFormat": "p95 latency",
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "title": "HTTP Requests Per Second",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=\"energy-forecast-api\"}[1m]))",
+          "legendFormat": "req/s",
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "title": "HTTP Error Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=\"energy-forecast-api\", status!~\"2..\"}[5m]))",
+          "legendFormat": "errors",
+          "interval": ""
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 30,
+  "version": 1
+}
+git add monitoring/grafana-dashboard.json
+git commit -m "Add Grafana dashboard JSON for API monitoring"
+git push
+
