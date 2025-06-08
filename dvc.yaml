@@ -1,0 +1,60 @@
+# dvc.yaml
+# DVC Pipeline for Energy Demand Forecasting DevMLOps
+# Author: Corey Leath
+
+stages:
+  preprocess:
+    cmd: python src/data/preprocess.py
+    deps:
+      - src/data/preprocess.py
+      - data/raw/energy.csv
+      - data/raw/weather.csv
+    outs:
+      - data/processed/combined.csv
+
+  features:
+    cmd: python src/features/build_features.py
+    deps:
+      - src/features/build_features.py
+      - data/processed/combined.csv
+    outs:
+      - data/processed/features.csv
+
+  train:
+    cmd: python src/models/train.py --config configs/train.yaml
+    deps:
+      - src/models/train.py
+      - data/processed/features.csv
+      - configs/train.yaml
+    outs:
+      - models/energy_forecast_model.pkl
+
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+      - src/models/evaluate.py
+      - models/energy_forecast_model.pkl
+      - data/processed/features.csv
+    outs:
+      - models/evaluation_metrics.txt
+
+# Initialize DVC repo (if not done yet)
+dvc init
+
+# Add remote (example: S3)
+dvc remote add -d origin s3://your-bucket-name/path
+
+# Run full pipeline
+dvc repro
+
+# Track data & models in Git
+git add dvc.yaml dvc.lock .dvc/config
+git commit -m "Track DVC pipeline"
+git push
+
+# Push data to remote
+dvc push
+
+git add dvc.yaml
+git commit -m "Add DVC pipeline definition"
+git push
