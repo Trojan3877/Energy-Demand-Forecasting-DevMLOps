@@ -11,6 +11,37 @@ Built with **Airflow, DVC, Docker, Kubernetes, and FastAPI**, with end-to-end au
 - Reduces waste & carbon footprint
 - Supports smart grid resiliency
 
+Energy-Demand-Forecasting-DevMLOps/
+├── k8s/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── ingress.yaml
+│   ├── hpa.yaml
+├── helm/energy-forecast-api/
+│   ├── Chart.yaml
+│   ├── values.yaml
+│   ├── templates/
+│       ├── deployment.yaml
+│       ├── service.yaml
+│       ├── ingress.yaml
+├── monitoring/
+│   ├── prometheus-config.yaml
+│   ├── grafana-dashboard.json
+├── mlflow/
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+└── .github/projects/energy-forecast-board.json
+
+
+
+
+
+
+
+
 ---
 
 ## ⚙️ **Pipeline Architecture**
