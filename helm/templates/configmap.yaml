@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "energy-demand-forecast.fullname" . }}-config
+  labels:
+    app: {{ include "energy-demand-forecast.name" . }}
+data:
+  # Application configuration variables
+  LOG_LEVEL: "{{ .Values.app.logLevel }}"
+  MODEL_PATH: "{{ .Values.app.modelPath }}"
+
+  # Feature flags for future expansion
+  ENABLE_KAFKA: "{{ .Values.kafka.enabled }}"
+  ENABLE_SNOWFLAKE: "{{ .Values.snowflake.enabled }}"
+
+  # Reserved for future metrics/monitoring integrations
+  PROMETHEUS_ENABLED: "true"
+
+  # Reserved for future A/B model rollout
+  ACTIVE_MODEL_VERSION: "v1"
