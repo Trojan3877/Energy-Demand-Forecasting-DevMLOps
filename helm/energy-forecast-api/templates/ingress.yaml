@@ -1,25 +1,42 @@
 {{- if .Values.ingress.enabled }}
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}-ingress
+  name: {{ include "energy-demand-forecast.fullname" . }}-ingress
+  labels:
+    app: {{ include "energy-demand-forecast.name" . }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    {{- if .Values.ingress.className }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.className }}
+    {{- end }}
+
+    {{- if .Values.ingress.tlsEnabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
+    {{- end }}
+
 spec:
+  {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+
   rules:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /
+          - path: {{ .Values.ingress.path }}
             pathType: Prefix
             backend:
               service:
-                name: {{ .Chart.Name }}
+                name: {{ include "energy-demand-forecast.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}
-{{- end }}
 
-git add helm/energy-forecast-api/templates/ingress.yaml
-git commit -m "Add Helm ingress.yaml template"
-git push
+  {{- if .Values.ingress.tlsEnabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tlsSecret }}
+  {{- end }}
+
+{{- end }}
