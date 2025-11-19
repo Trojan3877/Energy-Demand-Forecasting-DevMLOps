@@ -1,16 +1,80 @@
 # Energy Demand Forecasting - DevMLOps Pipeline 🚀⚡
 
-![CI](https://github.com/YourUsername/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml/badge.svg)
-![DVC](https://img.shields.io/badge/DVC-enabled-blue)
-![Docker Pulls](https://img.shields.io/docker/pulls/energy-forecast-api)
-![Helm](https://img.shields.io/badge/Helm-Chart-blue)
-![K8s](https://img.shields.io/badge/Kubernetes-ready-green)
-![Ansible](https://img.shields.io/badge/Ansible-automated-yellowgreen)
-![MLflow](https://img.shields.io/badge/MLflow-tracking-orange)
-![Prometheus](https://img.shields.io/badge/Prometheus-monitored-lightgrey)
-![Grafana](https://img.shields.io/badge/Grafana-visualized-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+# ⚡ Energy-Demand-Forecasting-DevMLOps  
+**Advanced Time-Series Forecasting | MLOps-Ready | L5/L6 Software Engineering Quality**  
+Author: **Corey Leath (Trojan3877)**
 
+[![Python](https://img.shields.io/badge/Python-3.10+-blue)]()
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)]()
+[![MLOps](https://img.shields.io/badge/MLOps-Production_GRADE-green)]()
+[![Docker](https://img.shields.io/badge/Docker-ready-informational)]()
+[![FastAPI](https://img.shields.io/badge/API-FastAPI-brightgreen)]()
+[![CI/CD](https://img.shields.io/badge/GitHub%20Actions-active-blue)]()
+
+---
+
+## 🚀 **Project Overview**
+This project is a **full MLOps-ready energy demand forecasting system** using advanced time-series deep learning models (LSTM, GRU, Transformer).  
+
+It is built to meet **L5/L6-level engineering hiring standards** from top AI companies (OpenAI, Anthropic, Meta, Netflix, AWS, Nvidia).
+
+Includes:
+
+- Advanced preprocessing (lags, rolling windows, holiday encoding)
+- Config-driven architecture
+- Fully modular pipeline
+- Multi-horizon deep learning models
+- CI/CD automation
+- Docker deployment
+- FastAPI inference server
+- Streamlit visualization dashboard
+- Full experiment tracking & artifact logging
+
+---
+
+## 📁 **Project Structure**
+
+Energy-Demand-Forecasting-DevMLOps
+│
+├── config/
+│ └── config.yaml
+│
+├── data/
+│ ├── raw.csv
+│ └── processed.csv
+│
+├── models/
+│ └── scaler.pkl
+│
+├── checkpoints/
+│ └── model_timestamp.pth
+│
+├── artifacts/
+│ ├── metrics.json
+│ ├── evaluation_report.json
+│ └── plots/
+│ ├── training_validation_curve.png
+│ ├── actual_vs_predicted.png
+│ ├── multi_horizon_evaluation.png
+│ ├── residual_plot.png
+│ ├── error_histogram.png
+│ └── correlation_heatmap.png
+│
+├── src/
+│ ├── train.py
+│ ├── evaluate.py
+│ ├── predict.py
+│ ├── data_loader.py
+│ ├── data_preprocess.py
+│ ├── model.py
+│ ├── utils.py
+│ ├── utils_metrics.py
+│ └── utils_plots.py
+│
+├── api.py
+├── streamlit_app.py
+├── Dockerfile
+└── requirements.txt
 
 
 <img width="404" alt="image" src="https://github.com/user-attachments/assets/2c375d72-6b7c-4a6e-babb-a6f8e20432de" />
