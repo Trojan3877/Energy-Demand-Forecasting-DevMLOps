@@ -1,0 +1,121 @@
+# ============================================
+#   Energy Demand Forecasting - Helm Values
+#   L6 Production Deployment Configuration
+# ============================================
+
+# -------------------------
+# Docker Image Configuration
+# -------------------------
+image:
+  repository: trojan3877/energy-forecast
+  tag: "latest"
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: dockerhub-secret
+
+
+# -------------------------
+# Application Settings
+# -------------------------
+app:
+  port: 8080
+  modelPath: "/app/model"
+  logLevel: INFO
+
+
+# -------------------------
+# Replica Configuration
+# -------------------------
+replicaCount: 3
+
+
+# -------------------------
+# Autoscaling (HPA)
+# -------------------------
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  cpuTarget: 60
+  memoryTarget: 70
+
+
+# -------------------------
+# Kubernetes Service Settings
+# -------------------------
+service:
+  type: LoadBalancer   # Change to ClusterIP if using Ingress
+  port: 80
+  targetPort: 8080
+
+
+# -------------------------
+# MLflow Configuration
+# -------------------------
+mlflow:
+  trackingUriSecret: mlflow-secret
+  trackingUriKey: tracking_uri
+
+
+# -------------------------
+# Kafka Streaming Configuration
+# -------------------------
+kafka:
+  enabled: true
+  bootstrapSecret: kafka-secret
+  bootstrapKey: bootstrap_servers
+  topic: "energy_stream"
+
+
+# -------------------------
+# Snowflake Configuration
+# -------------------------
+snowflake:
+  enabled: true
+  secretName: snowflake-secret
+  accountKey: account
+  userKey: user
+  passwordKey: password
+
+
+# -------------------------
+# Resource Requests & Limits
+# -------------------------
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+
+
+# -------------------------
+# Liveness & Readiness Probes
+# -------------------------
+probes:
+  readiness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 5
+  liveness:
+    path: /health
+    initialDelaySeconds: 20
+    periodSeconds: 10
+
+
+# -------------------------
+# Pod Annotations (Optional)
+# -------------------------
+podAnnotations: {}
+
+
+# -------------------------
+# Node Selector / Tolerations (Optional)
+# -------------------------
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
