@@ -80,11 +80,120 @@ Energy-Demand-Forecasting-DevMLOps
 <img width="404" alt="image" src="https://github.com/user-attachments/assets/2c375d72-6b7c-4a6e-babb-a6f8e20432de" />
 
 
+                 ┌──────────────────────────────────────┐
+                 │          RAW ENERGY DATA             │
+                 │        (CSV, API, Streaming)         │
+                 └──────────────────────────────────────┘
+                                   │
+                                   ▼
+                     ┌────────────────────────┐
+                     │   Data Preprocessing    │
+                     │  - Lag Features         │
+                     │  - Rolling Stats        │
+                     │  - Holiday Encoding     │
+                     │  - Timestamp Features   │
+                     └────────────────────────┘
+                                   │
+                          Processed CSV
+                                   │
+                                   ▼
+               ┌─────────────────────────────────────────────┐
+               │                 Training                     │
+               │  - LSTM / GRU / Transformer                 │
+               │  - Checkpoints                              │
+               │  - Early Stopping                           │
+               │  - LR Scheduler                             │
+               │  - Metrics + Plots                          │
+               └─────────────────────────────────────────────┘
+                                   │
+                             Saved Model
+                                   │
+                                   ▼
+        ┌──────────────────────────────────────────────────────┐
+        │                    Evaluation                         │
+        │  - RMSE / MAE / MAPE / R²                            │
+        │  - Multi-Horizon Analysis                            │
+        │  - Diagnostic Plots                                  │
+        └──────────────────────────────────────────────────────┘
+                                   │
+                        Artifacts, Reports, Plots
+                                   │
+                                   ▼
+     ┌─────────────────────────────────────────────────────────────┐
+     │                            Serving                          │
+     │            (FastAPI + Docker + Streamlit UI)                │
+     │                                                             │
+     │    User Input Sequence  ────────────────▶  FastAPI Predict │
+     │                                                             │
+     │    Interactive Forecasting Dashboard ─────▶ Streamlit UI    │
+     └─────────────────────────────────────────────────────────────┘
 
 
 
+graph TD
+
+subgraph Data Layer
+A1[Raw Data] --> A2[Preprocessing]
+A2 --> A3[Feature Engineering]
+A3 --> A4[Processed Dataset]
+end
+
+subgraph Model Layer
+B1[Build Model (LSTM/GRU/Transformer)]
+B1 --> B2[Training Loop]
+B2 --> B3[Checkpoints + Early Stopping]
+B3 --> B4[Evaluation + Metrics]
+end
+
+subgraph Serving Layer
+C1[FastAPI Inference Server]
+C2[Streamlit UI Dashboard]
+end
+
+A4 --> B1
+B4 --> C1
+B4 --> C2
 
 
+classDiagram
+    class DataPreprocessor {
+        +load_raw_data()
+        +add_time_features()
+        +add_lag_features()
+        +add_rolling_features()
+        +normalize()
+        +run_preprocessing()
+    }
+
+    class ModelBuilder {
+        +build_model()
+        +get_device()
+    }
+
+    class Trainer {
+        +train_model()
+        +early_stopping
+        +lr_scheduler
+        +save_checkpoints()
+    }
+
+    class Evaluator {
+        +run_evaluation()
+        +calculate_metrics()
+        +save_report()
+    }
+
+    class Predictor {
+        +predict_single()
+        +predict_multi()
+        +batch_predict()
+    }
+
+    DataPreprocessor --> Trainer
+    Trainer --> Evaluator
+    Trainer --> Predictor
+    Predictor --> FastAPI
+    Predictor --> Streamlit
 
 
 
