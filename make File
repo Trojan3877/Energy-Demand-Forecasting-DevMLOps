@@ -1,0 +1,26 @@
+.PHONY: preprocess train evaluate predict api ui docker
+
+install:
+	pip install -r requirements.txt
+
+preprocess:
+	python src/data_preprocess.py
+
+train:
+	python src/train.py
+
+evaluate:
+	python src/evaluate.py
+
+predict:
+	python src/predict.py
+
+api:
+	uvicorn api:app --reload --port 8000
+
+ui:
+	streamlit run streamlit_app.py
+
+docker:
+	docker build -t energy-forecast .
+	docker run -p 8000:8000 energy-forecast
