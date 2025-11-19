@@ -1,262 +1,199 @@
 """
 Energy-Demand-Forecasting-DevMLOps
-Training Pipeline (LSTM / GRU / Transformer)
+Inference Pipeline
 
 Author: Corey Leath (Trojan3877)
 
-This file provides:
-✔ Full training loop + evaluation
-✔ Early stopping
-✔ Model checkpointing
-✔ Learning rate scheduling
-✔ tqdm progress bars
-✔ RMSE / MAE / MAPE metrics
-✔ Config-driven training
-✔ GPU/MPS/CPU support
+Provides:
+✔ Load trained model + scaler
+✔ Single prediction
+✔ Batch prediction
+✔ Multi-step forecasting
+✔ Plotting predicted vs actual
 """
 
 import os
 import torch
-import torch.nn as nn
-import matplotlib.pyplot as plt
-from tqdm import tqdm
-from torch.utils.data import DataLoader
-
-from src.model import build_model, get_device
-from src.utils import (
-    load_data,
-    split_data,
-    create_sequences,
-    save_metrics,
-)
-
 import yaml
 import numpy as np
-from datetime import datetime
+import matplotlib.pyplot as plt
+
+from src.model import build_model, get_device
+from src.utils import load_scaler, load_data, ensure_dir
 
 
-# ---------------------------------------------------------
-# Metrics
-# ---------------------------------------------------------
-def RMSE(pred, true):
-    return torch.sqrt(nn.MSELoss()(pred, true))
-
-
-def MAE(pred, true):
-    return nn.L1Loss()(pred, true)
-
-
-def MAPE(pred, true, epsilon=1e-7):
-    return torch.mean(torch.abs((true - pred) / (true + epsilon))) * 100
-
-
-# ---------------------------------------------------------
-# Training Loop
-# ---------------------------------------------------------
-def train_one_epoch(model, loader, optimizer, criterion, device):
-    model.train()
-    losses = []
-
-    loop = tqdm(loader, desc="Training", leave=False)
-
-    for seq, target in loop:
-        seq, target = seq.to(device), target.to(device)
-
-        optimizer.zero_grad()
-        pred = model(seq)
-        loss = criterion(pred, target)
-
-        loss.backward()
-        optimizer.step()
-
-        losses.append(loss.item())
-        loop.set_postfix({"loss": loss.item()})
-
-    return np.mean(losses)
-
-
-# ---------------------------------------------------------
-# Validation Loop
-# ---------------------------------------------------------
-def validate(model, loader, criterion, device):
-    model.eval()
-    losses = []
-    preds = []
-    trues = []
-
-    with torch.no_grad():
-        for seq, target in loader:
-            seq, target = seq.to(device), target.to(device)
-
-            pred = model(seq)
-            loss = criterion(pred, target)
-
-            preds.append(pred.cpu())
-            trues.append(target.cpu())
-            losses.append(loss.item())
-
-    preds = torch.cat(preds)
-    trues = torch.cat(trues)
-
-    return (
-        np.mean(losses),
-        RMSE(preds, trues).item(),
-        MAE(preds, trues).item(),
-        MAPE(preds, trues).item(),
-    )
-
-
-# ---------------------------------------------------------
-# Early Stopping Class
-# ---------------------------------------------------------
-class EarlyStopping:
-    def __init__(self, patience=10, verbose=False):
-        self.patience = patience
-        self.counter = 0
-        self.best_loss = float("inf")
-        self.stop = False
-        self.verbose = verbose
-
-    def __call__(self, val_loss):
-        if val_loss < self.best_loss:
-            self.best_loss = val_loss
-            self.counter = 0
-        else:
-            self.counter += 1
-            if self.verbose:
-                print(f"[INFO] EarlyStopping counter: {self.counter}/{self.patience}")
-
-            if self.counter >= self.patience:
-                self.stop = True
-
-
-# ---------------------------------------------------------
-# Training Entry
-# ---------------------------------------------------------
-def train_model(config_path="config/config.yaml"):
-    # -------------------------------
-    # Load Config File
-    # -------------------------------
+# -----------------------------------------------------------
+# Load Model & Scaler
+# -----------------------------------------------------------
+def load_trained_model(config_path="config/config.yaml", checkpoint_path=None):
+    """
+    Loads the trained PyTorch model and scaler.
+    """
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
-    # -------------------------------
-    # Load Data
-    # -------------------------------
+    # Load scaler
+    scaler = load_scaler("models/scaler.pkl")
+
+    # Load data to detect input shape
     df = load_data(config["data"]["path"])
+    input_dim = df.shape[1]
 
-    train_df, val_df, test_df = split_data(
-        df,
-        config["data"]["train_ratio"],
-        config["data"]["val_ratio"],
+    model = build_model(
+        config=config,
+        input_size=input_dim,
+        output_size=config["data"]["forecast_horizon"]
     )
 
-    seq_len = config["data"]["sequence_length"]
-    horizon = config["data"]["forecast_horizon"]
-
-    train_seq, train_targets = create_sequences(train_df, seq_len, horizon)
-    val_seq, val_targets = create_sequences(val_df, seq_len, horizon)
-
-    train_loader = DataLoader(
-        list(zip(train_seq, train_targets)),
-        batch_size=config["training"]["batch_size"],
-        shuffle=True,
-    )
-    val_loader = DataLoader(
-        list(zip(val_seq, val_targets)),
-        batch_size=config["training"]["batch_size"],
-        shuffle=False,
-    )
-
-    input_size = train_seq.shape[-1]
-    output_size = horizon
-
-    # -------------------------------
-    # Build Model
-    # -------------------------------
-    device = get_device()
-    model = build_model(config, input_size, output_size)
-    criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(
-        model.parameters(), lr=config["training"]["learning_rate"]
-    )
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, patience=5, factor=0.5, verbose=True
-    )
-
-    # Early stopping
-    early_stopping = EarlyStopping(
-        patience=config["training"]["patience"], verbose=True
-    )
-
-    # -------------------------------
-    # Logging + Checkpoints
-    # -------------------------------
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    checkpoint_path = f"checkpoints/model_{timestamp}.pth"
-    os.makedirs("checkpoints", exist_ok=True)
-
-    history = {"train_loss": [], "val_loss": [], "rmse": [], "mae": [], "mape": []}
-
-    # -------------------------------
-    # Training Loop
-    # -------------------------------
-    for epoch in range(config["training"]["epochs"]):
-        print(f"\n[ Epoch {epoch+1}/{config['training']['epochs']} ]")
-
-        train_loss = train_one_epoch(model, train_loader, optimizer, criterion, device)
-        (
-            val_loss,
-            val_rmse,
-            val_mae,
-            val_mape,
-        ) = validate(model, val_loader, criterion, device)
-
-        scheduler.step(val_loss)
-
-        # Logging
-        history["train_loss"].append(train_loss)
-        history["val_loss"].append(val_loss)
-        history["rmse"].append(val_rmse)
-        history["mae"].append(val_mae)
-        history["mape"].append(val_mape)
-
-        print(
-            f"[INFO] train_loss={train_loss:.4f} | val_loss={val_loss:.4f} | "
-            f"RMSE={val_rmse:.4f} | MAE={val_mae:.4f} | MAPE={val_mape:.2f}%"
+    # Checkpoint handling
+    if checkpoint_path is None:
+        checkpoints = sorted(
+            [ckpt for ckpt in os.listdir("checkpoints") if ckpt.endswith(".pth")]
         )
+        if not checkpoints:
+            raise FileNotFoundError("No model checkpoints found in /checkpoints")
+        checkpoint_path = os.path.join("checkpoints", checkpoints[-1])
 
-        # Save checkpoint
-        torch.save(model.state_dict(), checkpoint_path)
+    device = get_device()
+    model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+    model.to(device)
+    model.eval()
 
-        # Early stopping check
-        early_stopping(val_loss)
-        if early_stopping.stop:
-            print("[INFO] Early stopping triggered — stopping training.")
-            break
+    print(f"[INFO] Loaded model from: {checkpoint_path}")
+    return model, scaler, config
 
-    # -------------------------------
-    # Save Metrics + Curve Plot
-    # -------------------------------
-    save_metrics(history, "artifacts/metrics.json")
 
-    os.makedirs("artifacts", exist_ok=True)
-    plt.figure()
-    plt.plot(history["train_loss"], label="Train Loss")
-    plt.plot(history["val_loss"], label="Validation Loss")
+
+# -----------------------------------------------------------
+# Prepare Input Sequence
+# -----------------------------------------------------------
+def prepare_sequence(sequence, scaler, device):
+    """
+    Scales and reshapes an input sequence for model inference.
+    """
+    sequence = scaler.transform(sequence)
+    sequence = torch.tensor(sequence, dtype=torch.float32)
+    sequence = sequence.unsqueeze(0)  # shape: (1, seq_len, features)
+    return sequence.to(device)
+
+
+
+# -----------------------------------------------------------
+# Single-Step Forecast
+# -----------------------------------------------------------
+def predict_single(model, sequence, scaler, device):
+    """
+    Predicts a single time step ahead.
+    """
+    inp = prepare_sequence(sequence, scaler, device)
+
+    with torch.no_grad():
+        pred = model(inp).cpu().numpy().flatten()
+
+    # Reverse scaling (forecast horizon steps)
+    pred_full = scaler.inverse_transform(pred.reshape(-1, 1)).flatten()
+    return pred_full
+
+
+
+# -----------------------------------------------------------
+# Multi-Step Forecast
+# -----------------------------------------------------------
+def predict_multi(model, initial_seq, steps, scaler, device):
+    """
+    Recursive multi-step forecasting.
+    """
+    seq = initial_seq.copy()
+    predictions = []
+
+    for _ in range(steps):
+        pred = predict_single(model, seq, scaler, device)
+        predictions.append(pred[0])
+
+        # Append prediction to sequence for next step
+        seq = np.vstack([seq[1:], [[pred[0]]]])
+
+    return np.array(predictions)
+
+
+
+# -----------------------------------------------------------
+# Batch Forecast
+# -----------------------------------------------------------
+def batch_predict(model, sequences, scaler, device):
+    """
+    Predicts for multiple sequences at once.
+    """
+    preds = []
+    for seq in sequences:
+        pred = predict_single(model, seq, scaler, device)
+        preds.append(pred[0])
+
+    return np.array(preds)
+
+
+
+# -----------------------------------------------------------
+# Plot Predictions vs Actual
+# -----------------------------------------------------------
+def plot_predictions(true, predicted, save_path="artifacts/prediction_plot.png"):
+    ensure_dir(os.path.dirname(save_path))
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(true, label="Actual", linewidth=2)
+    plt.plot(predicted, label="Predicted", linestyle="--")
+    plt.title("Energy Demand Forecast vs Actual")
+    plt.xlabel("Time")
+    plt.ylabel("Energy Demand")
     plt.legend()
-    plt.title("Training Curve")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.savefig("artifacts/training_curve.png")
+    plt.grid(True)
+    plt.savefig(save_path)
+    plt.close()
 
-    print(f"[INFO] Training complete. Model saved at: {checkpoint_path}")
-
-    return model, history
+    print(f"[INFO] Saved prediction plot → {save_path}")
 
 
-# ---------------------------------------------------------
+
+# -----------------------------------------------------------
+# CLI Inference Entry
+# -----------------------------------------------------------
+def run_inference(steps=24):
+    """
+    Runs a complete forecasting sequence:
+    ✔ Loads model + scaler
+    ✔ Takes last N observations
+    ✔ Produces multi-step forecast
+    ✔ Saves plot
+    """
+    model, scaler, config = load_trained_model()
+
+    df = load_data(config["data"]["path"])
+    seq_len = config["data"]["sequence_length"]
+
+    # Last N points used as initial seed
+    last_seq = df[-seq_len:].values
+
+    device = get_device()
+
+    print("[INFO] Running multi-step forecast...")
+    preds = predict_multi(
+        model=model,
+        initial_seq=last_seq,
+        steps=steps,
+        scaler=scaler,
+        device=device,
+    )
+
+    true_future = df[-(steps+1):-1].values.flatten()
+
+    plot_predictions(true_future, preds)
+
+    return preds
+
+
+
+# -----------------------------------------------------------
 # Script Entry
-# ---------------------------------------------------------
+# -----------------------------------------------------------
 if __name__ == "__main__":
-    train_model()
+    run_inference()
