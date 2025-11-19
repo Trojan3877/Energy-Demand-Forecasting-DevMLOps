@@ -1,0 +1,87 @@
+# =====================================================================
+# Energy Demand Forecasting — L5/L6 Production Configuration
+# Author: Corey Leath (Trojan3877)
+#
+# Applies to:
+# - Time-series forecasting
+# - LSTM / GRU / Transformer models
+# - DevMLOps, MLflow, Airflow/Kubeflow compatibility
+# =====================================================================
+
+# --------------------------------------------------------
+# Data Settings
+# --------------------------------------------------------
+data:
+  raw_path: "data/raw/energy.csv"        # Input dataset
+  processed_path: "data/processed/data.parquet"
+  target_column: "demand"                # Target variable to forecast
+  datetime_column: "timestamp"           # Time column
+  frequency: "H"                          # H = hourly data
+  test_size: 0.2                          # 20% test split
+  val_size: 0.1                           # 10% validation split (of train)
+
+
+# --------------------------------------------------------
+# Feature Engineering Settings
+# --------------------------------------------------------
+features:
+  create_time_features: true
+  include_lags: [1, 24, 48]              # Past 1 hour, 1 day, 2 days
+  include_moving_averages:
+    - window: 24                         # 24-hour SMA
+    - window: 168                        # 7-day SMA
+  scale_features: true                   # MinMax scaling
+
+
+# --------------------------------------------------------
+# Model Settings
+# --------------------------------------------------------
+model:
+  type: "LSTM"                           # Options: LSTM, GRU, Transformer
+  hidden_units: 64
+  num_layers: 2
+  dropout: 0.2
+  learning_rate: 0.001
+  sequence_length: 48                    # Lookback window
+  forecast_horizon: 24                   # Predict 24 hours ahead
+
+
+# --------------------------------------------------------
+# Training Configuration
+# --------------------------------------------------------
+training:
+  batch_size: 64
+  epochs: 30
+  shuffle_buffer: 5000
+  seed: 42
+  checkpoint_dir: "checkpoints/"
+  early_stopping_patience: 5
+  save_best_only: true
+
+
+# --------------------------------------------------------
+# Evaluation Settings
+# --------------------------------------------------------
+evaluation:
+  metrics: ["mae", "rmse", "mape"]
+  plot_results: true
+  save_plots_to: "results/plots/"
+
+
+# --------------------------------------------------------
+# MLOps & Logging
+# --------------------------------------------------------
+mlops:
+  log_metrics: true
+  model_registry: "models/"              # Where to store versioned models
+  save_artifacts: true
+  mlflow_tracking: false                 # Can be enabled anytime
+
+
+# --------------------------------------------------------
+# Deployment Settings
+# --------------------------------------------------------
+deployment:
+  export_path: "exports/model/"
+  include_scaler: true                   # Save preprocessing scaler
+  include_config: true
