@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: energy-forecast-api
+  name: energy-forecast-app
   labels:
     app: energy-forecast
 spec:
@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       app: energy-forecast
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -16,16 +21,75 @@ spec:
     spec:
       containers:
         - name: energy-forecast
-          image: trojan3877/energy-forecast:latest
+          image: YOUR_DOCKERHUB_USERNAME/energy-forecast:latest
+          imagePullPolicy: Always
+
           ports:
-            - containerPort: 8000
+            - containerPort: 8080
+
+          env:
+            # --- MLflow tracking ---
+            - name: MLFLOW_TRACKING_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secret
+                  key: tracking_uri
+
+            # --- Kafka Streaming ---
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secret
+                  key: bootstrap_servers
+
+            - name: KAFKA_TOPIC
+              value: "energy_stream"
+
+            # --- Snowflake ---
+            - name: SNOWFLAKE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: snowflake-secret
+                  key: account
+
+            - name: SNOWFLAKE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: snowflake-secret
+                  key: user
+
+            - name: SNOWFLAKE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: snowflake-secret
+                  key: password
+
+            # --- Model Registry / API ---
+            - name: MODEL_PATH
+              value: "/app/model"
+
           resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
             limits:
               cpu: "1"
               memory: "1Gi"
-            requests:
-              cpu: "500m"
-              memory: "512Mi"
-          env:
-            - name: MODEL_PATH
-              value: "/app/model/model.pt"
+
+          # Probes for L6 Production Stability
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+      imagePullSecrets:
+        - name: dockerhub-secret
