@@ -1,26 +1,45 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: energy-forecast-api-hpa
-  namespace: default
+  name: energy-forecast-hpa
+  labels:
+    app: energy-forecast
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: energy-forecast-api
-  minReplicas: 3
-  maxReplicas: 10
+    name: energy-forecast-app
+
+  minReplicas: 3       # Recommended minimum for production
+  maxReplicas: 10      # Burst capacity for heavy load
+
   metrics:
+    # CPU-based autoscaling
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 60   # scale when average CPU > 60%
 
-kubectl apply -f k8s/hpa.yaml
-kubectl get hpa
+    # Memory-based autoscaling
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 70   # scale when memory > 70%
 
-git add k8s/hpa.yaml
-git commit -m "Add Kubernetes HPA (autoscaler) for API"
-git push
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 15
