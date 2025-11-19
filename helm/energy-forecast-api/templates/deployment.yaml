@@ -1,26 +1,96 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "energy-forecast.fullname" . }}
+  name: {{ include "energy-demand-forecast.fullname" . }}
+  labels:
+    app: {{ include "energy-demand-forecast.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: energy-forecast
+      app: {{ include "energy-demand-forecast.name" . }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
   template:
     metadata:
       labels:
-        app: energy-forecast
+        app: {{ include "energy-demand-forecast.name" . }}
+      annotations:
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+
     spec:
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+
       containers:
-        - name: api
+        - name: {{ include "energy-demand-forecast.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+
           ports:
-            - containerPort: {{ .Values.service.targetPort }}
+            - containerPort: {{ .Values.app.port }}
+
           env:
+            # ----------- MLflow -----------
+            - name: MLFLOW_TRACKING_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mlflow.trackingUriSecret }}
+                  key: {{ .Values.mlflow.trackingUriKey }}
+
+            # ----------- Kafka -----------
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.kafka.bootstrapSecret }}
+                  key: {{ .Values.kafka.bootstrapKey }}
+
+            - name: KAFKA_TOPIC
+              value: {{ .Values.kafka.topic }}
+
+            # ----------- Snowflake -----------
+            - name: SNOWFLAKE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.snowflake.secretName }}
+                  key: {{ .Values.snowflake.accountKey }}
+
+            - name: SNOWFLAKE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.snowflake.secretName }}
+                  key: {{ .Values.snowflake.userKey }}
+
+            - name: SNOWFLAKE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.snowflake.secretName }}
+                  key: {{ .Values.snowflake.passwordKey }}
+
+            # ----------- App settings -----------
             - name: MODEL_PATH
-              value: "{{ .Values.env.MODEL_PATH }}"
+              value: {{ .Values.app.modelPath }}
+
+            - name: LOG_LEVEL
+              value: {{ .Values.app.logLevel }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: {{ .Values.app.port }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: {{ .Values.app.port }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
