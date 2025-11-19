@@ -1,11 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "energy-forecast.fullname" . }}
+  name: {{ include "energy-demand-forecast.fullname" . }}
+  labels:
+    app: {{ include "energy-demand-forecast.name" . }}
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: energy-forecast
+    app: {{ include "energy-demand-forecast.name" . }}
   ports:
-    - port: {{ .Values.service.port }}
+    - name: http
+      protocol: TCP
+      port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
