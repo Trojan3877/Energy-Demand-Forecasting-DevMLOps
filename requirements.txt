@@ -1,29 +1,44 @@
-# Core Python libraries for Energy Demand Forecasting DevMLOps
+# =======================================================
+# Energy-Demand-Forecasting-DevMLOps (L5/L6 Dependencies)
+# Version-pinned for full reproducibility
+# =======================================================
 
-# Data manipulation
-pandas>=1.3
-numpy>=1.21
+# -----------------------
+# Core ML Framework (choose one, leave the other commented)
+# -----------------------
+tensorflow==2.17.0            # For LSTM/GRU/Transformer
+# torch==2.2.0+cu118           # Optional PyTorch version (GPU enabled)
 
-# Machine Learning
-scikit-learn>=1.0
-xgboost>=1.5
-prophet>=1.1
+# -----------------------
+# Data Processing / Time-Series
+# -----------------------
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.1
+pyyaml==6.0.2
+joblib==1.4.0
 
-# API
-fastapi>=0.78
-uvicorn[standard]>=0.18
+# -----------------------
+# Visualization
+# -----------------------
+matplotlib==3.9.0
+seaborn==0.13.2
 
-# Workflow orchestration
-apache-airflow==2.6.3
+# -----------------------
+# MLOps / Logging / Experimentation
+# -----------------------
+mlflow==2.13.0
+tqdm==4.66.4
+tensorboard==2.17.0
 
-# Experiment tracking
-dvc>=2.10
-dvc-s3>=2.10
+# -----------------------
+# Production API (optional for deployment)
+# -----------------------
+# fastapi==0.111.0
+# uvicorn==0.29.0
+# pydantic==2.7.0
 
-# Dev tools
-pytest>=7.1
-flake8>=4.0
-
-git add requirements.txt
-git commit -m "Add base requirements.txt"
-git push
+# -----------------------
+# Utility
+# -----------------------
+python-dateutil==2.9.0
