@@ -1,47 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
-  labels:
-    app: {{ .Chart.Name }}
+  name: {{ include "energy-forecast.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: energy-forecast
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: energy-forecast
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: api
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 8000
-          livenessProbe:
-            httpGet:
-              path: /docs
-              port: 8000
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /docs
-              port: 8000
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            - containerPort: {{ .Values.service.targetPort }}
+          env:
+            - name: MODEL_PATH
+              value: "{{ .Values.env.MODEL_PATH }}"
           resources:
-            requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- toYaml .Values.resources | nindent 12 }}
 
-after you commit 
-
-git add helm/energy-forecast-api/templates/deployment.yaml
-git commit -m "Add Helm deployment.yaml template"
-git push
