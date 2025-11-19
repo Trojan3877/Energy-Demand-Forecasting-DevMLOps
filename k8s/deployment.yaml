@@ -2,54 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: energy-forecast-api
-  namespace: default
   labels:
-    app: energy-forecast-api
-    tier: backend
+    app: energy-forecast
 spec:
-  replicas: 3  # Start with 3 pods (can be autoscaled later)
+  replicas: 3
   selector:
     matchLabels:
-      app: energy-forecast-api
+      app: energy-forecast
   template:
     metadata:
       labels:
-        app: energy-forecast-api
-        tier: backend
+        app: energy-forecast
     spec:
       containers:
-        - name: energy-forecast-api
-          image: energy-forecast-api:latest  # Update if using remote registry
-          imagePullPolicy: IfNotPresent
+        - name: energy-forecast
+          image: trojan3877/energy-forecast:latest
           ports:
             - containerPort: 8000
-          livenessProbe:
-            httpGet:
-              path: /docs
-              port: 8000
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /docs
-              port: 8000
-            initialDelaySeconds: 5
-            periodSeconds: 5
           resources:
-            requests:
-              cpu: "250m"
-              memory: "512Mi"
             limits:
               cpu: "1"
               memory: "1Gi"
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
           env:
-            - name: ENVIRONMENT
-              value: "production"
-
-kubectl apply -f k8s/deployment.yaml
-kubectl get pods
-
-mkdir -p k8s
-git add k8s/deployment.yaml
-git commit -m "Add Kubernetes deployment.yaml for API"
-git push
+            - name: MODEL_PATH
+              value: "/app/model/model.pt"
