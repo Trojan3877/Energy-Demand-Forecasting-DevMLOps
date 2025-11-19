@@ -1,58 +1,102 @@
-# Python
+# ============================================================
+# Energy-Demand-Forecasting-DevMLOps (L5/L6 Production Level)
+# Git Ignore File
+# ============================================================
+
+# -----------------------
+# Python cache / build
+# -----------------------
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.pkl
+*.pickle
+*.parquet
+*.h5
+
+build/
+dist/
+.eggs/
 *.egg-info/
 
-# Environments
+# -----------------------
+# Virtual Environments
+# -----------------------
+venv/
+env/
+ENV/
 .venv/
-.env/
-.envrc
 
-# Jupyter
+# -----------------------
+# Jupyter Notebook
+# -----------------------
 .ipynb_checkpoints/
 
-# DVC
-.dvc/
-*.dvc
-.dvc.lock
-dvc.lock
-.cache/
-.cache/dvc/
+# -----------------------
+# Data files
+# -----------------------
+data/raw/
+data/processed/
+data/*.csv
+data/*.xlsx
+data/*.json
 
-# Data (keep raw/processed dirs but ignore files)
-data/raw/*
-!data/raw/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
+# Keep dataset folder structure but ignore contents
+data/*
 
-# Models (keep dir, ignore files)
-models/*
-!models/.gitkeep
+# -----------------------
+# Model artifacts
+# -----------------------
+checkpoints/
+models/
+exports/
+*.onnx
+*.tflite
 
-# Airflow
-airflow/airflow.db
-airflow/airflow-webserver.pid
-airflow/logs/
-
-# Terraform
-terraform/.terraform/
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-
-# Docker logs
+# -----------------------
+# Logs & Results
+# -----------------------
+logs/
+results/
+tensorboard/
 *.log
+*.txt
 
-# VSCode
-.vscode/
+# -----------------------
+# MLflow
+# -----------------------
+mlruns/
+mlartifacts/
 
-# OS
+# -----------------------
+# OS files
+# -----------------------
 .DS_Store
 Thumbs.db
 
+# -----------------------
+# Editor / IDE files
+# -----------------------
+.vscode/
+.idea/
 
-git add .gitignore
-git commit -m "Update .gitignore for DVC, Terraform, Airflow"
-git push
+# -----------------------
+# Docker
+# -----------------------
+*.tar
+docker/*.log
 
+# -----------------------
+# Cache
+# -----------------------
+.cache/
+*.zip
+*.tar.gz
+
+# -----------------------
+# Configs that should not be committed
+# -----------------------
+*.secret
+*.env
+.env.*
