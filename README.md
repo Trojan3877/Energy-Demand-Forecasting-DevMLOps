@@ -4,12 +4,33 @@
 **Advanced Time-Series Forecasting | MLOps-Ready | L5/L6 Software Engineering Quality**  
 Author: **Corey Leath (Trojan3877)**
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue)]()
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)]()
-[![MLOps](https://img.shields.io/badge/MLOps-Production_GRADE-green)]()
-[![Docker](https://img.shields.io/badge/Docker-ready-informational)]()
-[![FastAPI](https://img.shields.io/badge/API-FastAPI-brightgreen)]()
-[![CI/CD](https://img.shields.io/badge/GitHub%20Actions-active-blue)]()
+<!-- Programming & Frameworks -->
+![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Enabled-009688?logo=fastapi&logoColor=white)
+
+<!-- Containers & DevOps -->
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Production_Ready-326CE5?logo=kubernetes&logoColor=white)
+![Helm](https://img.shields.io/badge/Helm-Chart_Enabled-0F1689?logo=helm&logoColor=white)
+
+<!-- MLOps -->
+![MLflow](https://img.shields.io/badge/MLflow-Tracking_Enabled-orange?logo=mlflow&logoColor=white)
+![Kafka](https://img.shields.io/badge/Kafka-Streaming_Enabled-black?logo=apachekafka&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-Integrated-29B5E8?logo=snowflake&logoColor=white)
+
+<!-- CI/CD -->
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-success?logo=githubactions&logoColor=white)
+![Trivy Scan](https://img.shields.io/badge/Security_Scan-Trivy-critical?logo=aqua&logoColor=white)
+
+<!-- Autoscaling -->
+![HPA](https://img.shields.io/badge/Autoscaling-HPA-green?logo=kubernetes&logoColor=white)
+
+<!-- Infrastructure as Code -->
+![Terraform](https://img.shields.io/badge/Terraform-Ready-5C4EE5?logo=terraform&logoColor=white)
+
+<!-- GitOps -->
+![ArgoCD](https://img.shields.io/badge/ArgoCD-GitOps_Ready-FE552E?logo=argo&logoColor=white)
+
 
 ---
 
