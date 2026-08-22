@@ -1,245 +1,161 @@
 # ⚡ Energy Demand Forecasting — DevMLOps
 
-### Production-oriented time-series forecasting, model serving, Streamlit analytics, and nine-tier deployment hygiene
+Production-oriented time-series forecasting, observable inference, reproducible research evidence, and deployment automation.
 
-[![CI](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml/badge.svg)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml)
-[![Research Benchmarks](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/benchmarks.yml)
-[![Security](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/security.yml/badge.svg)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/security.yml)
-![Coverage](https://img.shields.io/badge/coverage-93.10%25-brightgreen)
+[![CI](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml)
+[![Research Benchmarks](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/benchmarks.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/benchmarks.yml)
+[![Security Evidence](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/security.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/security.yml)
+[![CodeQL](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-23%20passed-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-93.10%25-brightgreen)
 ![Rolling Origin](https://img.shields.io/badge/rolling--origin-30%20folds-blue)
 ![MASE](https://img.shields.io/badge/MASE-1.551-blueviolet)
-![P95 Latency](https://img.shields.io/badge/P95-28.969%20ms-blue)
+![P95](https://img.shields.io/badge/benchmark%20P95-28.969%20ms-blue)
 
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-Production-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-Deployable-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Helm](https://img.shields.io/badge/Helm-Chart-0F1689?style=for-the-badge&logo=helm&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-Tracking-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-Dashboards-F46800?style=for-the-badge&logo=grafana&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Enterprise_CI-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-![CodeQL](https://img.shields.io/badge/CodeQL-Passing-2F80ED?style=for-the-badge&logo=github&logoColor=white)
-![Trivy](https://img.shields.io/badge/Trivy-Scanned-1904DA?style=for-the-badge)
-![SBOM](https://img.shields.io/badge/CycloneDX-SBOM-success?style=for-the-badge)
-![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-025E8C?style=for-the-badge&logo=dependabot&logoColor=white)
-![Security](https://img.shields.io/badge/Security-Hardened-success?style=for-the-badge)
-![DevMLOps](https://img.shields.io/badge/DevMLOps-L6_Engineering-purple?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+> **Evidence boundary:** the committed benchmark measures the transparent seasonal-naive baseline on seeded synthetic hourly demand. It does **not** establish real-grid generalization, trained deep-model accuracy, calibrated production uncertainty, or a utility-grade service-level objective.
+
+## What this repository demonstrates
+
+`Energy-Demand-Forecasting-DevMLOps` is a portfolio-scale forecasting and MLOps system with two intentionally distinct paths:
+
+1. a **public, artifact-independent path** built around reproducible synthetic data and a transparent seasonal-naive forecast; and
+2. a **trained-model path** for LSTM, GRU, Transformer, and other model experiments whose artifacts can be tracked and served without being confused with the public baseline.
+
+The engineering surface includes validated time-series preparation, research-style evaluation, FastAPI inference, Prometheus metrics, Streamlit analytics, MLflow foundations, Docker, Kubernetes/Helm, infrastructure automation, CI, security evidence, SBOM generation, and semantic releases.
+
+The repository is production-shaped, not production-certified. See [`L6_AUDIT.md`](L6_AUDIT.md) for the current promotion assessment and [`docs/AUDIT.md`](docs/AUDIT.md) for the reproducibility controls.
 
 ---
 
-**Energy Demand Forecasting — DevMLOps** is a portfolio-scale AI and MLOps platform for exploring hourly energy-demand forecasting across the full software lifecycle:
+## Evidence snapshot
 
-- validated data ingestion and time-series preparation;
-- deterministic baseline forecasting;
-- LSTM, GRU, and Transformer model architectures;
-- experiment tracking and model artifacts;
-- FastAPI inference with health and metrics endpoints;
-- an artifact-independent Streamlit dashboard;
-- Docker, Kubernetes, Helm, Terraform, Ansible, and monitoring foundations;
-- CI/CD, security automation, SBOM generation, release engineering, and operational governance.
+The current committed evidence is generated by a seeded, leakage-aware rolling-origin benchmark and CI test suite.
 
-The repository is designed to demonstrate engineering breadth without hiding implementation limitations. The public Streamlit application uses a transparent **seasonal-naive baseline** so it can run without private data, model checkpoints, or GPU dependencies. The full training pathway remains available for deeper model experiments.
+| Evidence | Current recorded result | Source |
+|---|---:|---|
+| Test suite | 23 passing tests | CI / `docs/AUDIT.md` |
+| Measured coverage | 93.10% | CI / `docs/AUDIT.md` |
+| Rolling-origin protocol | 30 folds / 720 predictions | `benchmarks/latest.json` |
+| MAE | 88.674 demand units | `benchmarks/latest.json` |
+| RMSE | 104.780 demand units | `benchmarks/latest.json` |
+| MAPE / sMAPE | 6.994% / 7.001% | `benchmarks/latest.json` |
+| MASE | 1.551 | `benchmarks/latest.json` |
+| Mean signed error | +0.553 demand units | `benchmarks/latest.json` |
+| Fold MAE mean ± SD | 88.674 ± 50.136 | `benchmarks/latest.json` |
+| Benchmark latency mean / P95 / P99 | 28.422 / 28.969 / 40.401 ms | `benchmarks/latest.json` |
+| Benchmark throughput | 35.18 24-hour forecasts/s | `benchmarks/latest.json` |
+| Peak traced Python allocation | 0.530 MiB | `benchmarks/latest.json` |
 
-> **Portfolio scope:** This repository demonstrates production-oriented engineering patterns. It is not a utility-grade forecasting system, a substitute for grid-operator validation, or a commercial service-level guarantee.
+**Recorded protocol:** seed `20260719`; 2,160 synthetic hourly observations; SHA-256 `d77dd9c630e8576cffcd2b00420294a5632761eec86842f4f68fd265e78fd102`; 14-day initial history; 30 non-overlapping 24-hour folds; 50 warmups; 500 timed iterations; GitHub-hosted Ubuntu 24.04 / Python 3.11.15.
+
+Runtime measurements are environment-sensitive. Quality metrics and the dataset fingerprint are the reproducibility anchors.
 
 ---
 
-
-## Production Readiness Guide
-
-> This section is the portfolio audit entry point for **Energy-Demand-Forecasting-DevMLOps**. It describes an engineering promotion path; it is not a claim that the repository is already production-authorized.
-
-[![CI](https://img.shields.io/github/actions/workflow/status/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/ci.yml?branch=main&label=CI)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions) [![License](https://img.shields.io/github/license/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/blob/main/LICENSE)
-
-### Architecture flowchart
+## Architecture flowchart
 
 ```mermaid
 flowchart LR
-    Client --> Gateway --> Services[API + workers] --> Events[(Event bus)] --> Store[(State)]
+    A[CSV upload or seeded synthetic demand] --> B[Schema + time-series validation]
+    B --> C[Feature / history preparation]
+
+    C --> D[Seasonal-naive public baseline]
+    D --> E[Streamlit dashboard]
+
+    C --> F[Training pathway]
+    F --> G[LSTM / GRU / Transformer / estimator artifacts]
+    G --> H[Artifact + metadata storage]
+    H --> I[FastAPI inference]
+
+    I --> J[/health]
+    I --> K[/metrics]
+    I --> L[/predict]
+
+    E --> M[Research evidence]
+    I --> M
+    M --> N[GitHub Actions]
+    N --> O[Tests + benchmark artifacts]
+    N --> P[Docker / Helm validation]
+    N --> Q[Security + SBOM evidence]
+    N --> R[GitHub Release + GHCR]
 ```
 
-### Quickstart and local validation
-
-The supported local path should be reproducible from a clean checkout. The inferred stack for this repository is **Python/platform services**.
-
-```bash
-python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-pytest -q
-```
-
-If the project uses external services, model artifacts, cloud credentials, or private data, start them through documented local fixtures or mocks. Never place secrets or identifiable records in the repository.
-
-### Research-style metrics and benchmarks
-
-| Evidence | Required record |
-|---|---|
-| Correctness | Test command, commit SHA, runtime, and pass/fail result |
-| Performance | Warm-up, sample count, concurrency, median, p95, p99, throughput, and memory |
-| Data/model quality | Dataset version, split strategy, leakage controls, calibration, subgroup results, and uncertainty |
-| Runtime | Image digest, health-check latency, resource limits, and rollback target |
-| Security | Dependency, secret, SAST, container, and SBOM results |
-
-A benchmark number belongs in a versioned artifact tied to a commit and hardware/runtime description. Engineering benchmarks must not be presented as clinical, financial, safety, or model-quality validation without the appropriate domain evidence.
-
-### Extended Q&A
-
-**What is production-ready for this repository?**  
-A reproducible build, tested public contract, controlled configuration, observable runtime, documented security boundary, versioned artifacts, and a tested rollback path.
-
-**What must remain explicit?**  
-The intended use, excluded use, data/credential handling, model or algorithm limitations, and which metrics are measured versus aspirational.
-
-**What should be completed next?**  
-Use the linked production-readiness issue for this repository as the checklist. Resolve missing tests, deployment instructions, observability, supply-chain controls, and release evidence before attaching a production claim.
-
-
-## Research Metrics and Reproducible Benchmarks
-
-The public baseline is evaluated with a **leakage-safe expanding-window rolling-origin protocol**. Each fold trains only on observations at or before its origin and forecasts the next 24 hours. The source-of-truth JSON is [`benchmarks/latest.json`](benchmarks/latest.json), the human-readable protocol is [`benchmarks/benchmark_report.md`](benchmarks/benchmark_report.md), and the full control audit is [`docs/AUDIT.md`](docs/AUDIT.md).
-
-| Category | Metric | GitHub-hosted result |
-|---|---|---:|
-| Protocol | Folds / predictions | 30 / 720 |
-| Accuracy | MAE | 88.674 demand units |
-| Accuracy | RMSE | 104.780 demand units |
-| Accuracy | MAPE / sMAPE | 6.994% / 7.001% |
-| Relative error | MASE | 1.551 |
-| Bias | Mean signed error | +0.553 demand units |
-| Fold stability | MAE mean ± SD | 88.674 ± 50.136 |
-| Runtime | Mean / P95 / P99 | 28.422 / 28.969 / 40.401 ms |
-| Throughput | 24-hour forecasts | 35.18 forecasts/s |
-| Memory | Peak traced Python allocation | 0.530 MiB |
-| Verification | Tests / coverage | 23 passed / 93.10% |
-
-**Protocol:** seeded synthetic hourly demand (`seed=20260719`, 2,160 observations, SHA-256 `d77dd9…fd102`); 14-day initial history; 30 non-overlapping 24-hour folds; 50 latency warmups and 500 timed iterations; GitHub-hosted Ubuntu 24.04 / Python 3.11.15. See [workflow run 29692899581](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/runs/29692899581).
-
-> **Claim boundary:** these results characterize the transparent seasonal-naive baseline on synthetic data. They do not establish real-grid generalization, trained LSTM/GRU/Transformer/XGBoost accuracy, calibrated probabilistic coverage, or production SLOs. Latency excludes network, API, and UI overhead and varies by runner.
-
-### Reproduce the evidence
-
-```bash
-PYTHONHASHSEED=0 python benchmarks/run_benchmark.py \
-  --iterations 500 --warmup 50 --output benchmark-results.json
-```
-
-The quality metrics and dataset fingerprint are deterministic. Runtime metrics are environment-sensitive. The workflow rejects malformed evidence, a changed fold/sample contract, MASE ≥ 2.0, or missing fingerprint/latency values.
-
----
-
-## Key Capabilities
-
-### Interactive forecasting
-
-- Reproducible synthetic hourly demand data.
-- User-uploaded CSV support.
-- Selectable timestamp and demand columns.
-- Schema, timestamp, numeric, non-negative, duplicate, and history validation.
-- Multi-horizon forecasts from 1 to 168 hours.
-- Seasonal-naive baseline with bounded trend adjustment.
-- Prediction intervals derived from historical seasonal residuals.
-- Forecast-table inspection and CSV download.
-
-### Machine-learning architecture
-
-- LSTM forecasting.
-- GRU forecasting.
-- Transformer encoder forecasting.
-- Config-driven architecture selection.
-- GPU → MPS → CPU device resolution.
-- Lazy model-artifact loading.
-- Explicit trained-model versus deterministic-baseline provenance.
-
-### API and observability
-
-- FastAPI request and response contracts.
-- Bounded Pydantic inputs.
-- `/health` liveness and model-artifact metadata.
-- `/metrics` Prometheus endpoint.
-- Controlled service errors.
-- Request, error, and latency instrumentation.
-
-### Delivery and security
-
-- Python 3.10 and 3.11 test matrix.
-- Ruff correctness gates.
-- Coverage XML and JUnit artifacts.
-- Streamlit deployment smoke testing.
-- Multi-stage non-root API container.
-- Live container health validation.
-- CodeQL, Gitleaks, Trivy, `pip-audit`, Dependabot, and CycloneDX SBOM generation.
-- Semantic tag-driven GitHub Releases and GHCR publishing.
-
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-    A[CSV Upload or Synthetic Data] --> B[Schema and Quality Validation]
-    B --> C[Deterministic Seasonal Baseline]
-    C --> D[Streamlit Dashboard]
-
-    B --> E[Feature Engineering]
-    E --> F[LSTM / GRU / Transformer Training]
-    F --> G[Model Artifacts and Registry]
-    G --> H[FastAPI Inference]
-
-    D --> I[CI / Security / Release Evidence]
-    H --> I
-
-    I --> J[Docker / Kubernetes / Helm]
-    I --> K[GitHub Releases / GHCR]
-```
-
-### Request and deployment flow
+## System design flow
 
 ```mermaid
 sequenceDiagram
     participant User
     participant UI as Streamlit
-    participant Forecast as Forecast Service
+    participant Forecast as Forecast Logic
+    participant API as FastAPI
+    participant Model as Optional Trained Artifact
+    participant Metrics as Prometheus
     participant CI as GitHub Actions
-    participant Runtime as API Container
+    participant Registry as GHCR / GitHub Release
 
-    User->>UI: Select synthetic data or upload CSV
-    UI->>Forecast: Validate and normalize time series
-    Forecast-->>UI: Forecast and uncertainty intervals
-    UI-->>User: Charts, quality evidence, CSV download
+    User->>UI: Upload CSV or generate seeded demo data
+    UI->>Forecast: Validate series + request horizon
+    Forecast-->>UI: Baseline forecast + intervals
+    UI-->>User: Charts + downloadable forecast
 
-    CI->>UI: Import and server-health smoke test
-    CI->>Runtime: Build and start container
-    CI->>Runtime: GET /health
-    Runtime-->>CI: Healthy response
+    User->>API: POST /predict
+    API->>Model: Load artifact if MODEL_PATH exists
+    alt trained artifact available
+        Model-->>API: model prediction
+        API-->>User: backend=trained-model
+    else no compatible artifact
+        API-->>User: backend=deterministic-baseline
+    end
+    API->>Metrics: request / error / latency observations
+
+    CI->>CI: tests + rolling-origin benchmark
+    CI->>CI: container + Streamlit health smoke tests
+    CI->>CI: security reports + SBOM
+    CI->>Registry: semantic release artifacts
 ```
 
 ---
 
-## Streamlit Community Cloud
+## Quick Start
 
-The public dashboard is designed to deploy without private data, checkpoints, scalers, API keys, or external services.
+### Option A — FastAPI service
 
-Use these settings after the feature is merged:
+Linux/macOS:
 
-```text
-Repository:
-CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps
-
-Branch:
-main
-
-Main file path:
-streamlit_demo/app.py
+```bash
+git clone https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps.git
+cd Energy-Demand-Forecasting-DevMLOps
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements-api.txt
+uvicorn src.serve.app:app --host 0.0.0.0 --port 8000
 ```
 
-The dedicated deployment directory uses a lightweight dependency set instead of installing the full PyTorch, MLflow, XGBoost, and training environment.
+Windows PowerShell:
 
-Detailed deployment and troubleshooting instructions are available in [`docs/STREAMLIT_DEPLOYMENT.md`](docs/STREAMLIT_DEPLOYMENT.md).
+```powershell
+git clone https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps.git
+cd Energy-Demand-Forecasting-DevMLOps
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements-api.txt
+uvicorn src.serve.app:app --host 0.0.0.0 --port 8000
+```
 
-### Run the dashboard locally
+Verify:
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+OpenAPI docs: `http://127.0.0.1:8000/docs`
+
+### Option B — Streamlit dashboard
 
 ```bash
 python -m venv .venv
@@ -249,58 +165,92 @@ pip install -r streamlit_demo/requirements.txt
 streamlit run streamlit_demo/app.py
 ```
 
-Open:
+Windows activation equivalent:
 
-```text
-http://localhost:8501
+```powershell
+.\.venv\Scripts\Activate.ps1
 ```
 
----
+Dashboard: `http://127.0.0.1:8501`
 
-## FastAPI Service
+### Option C — Containerized API
 
-### Install the slim API runtime
+```bash
+docker build -t energy-demand-forecasting:local .
+docker run --rm -p 8000:8000 energy-demand-forecasting:local
+curl http://127.0.0.1:8000/health
+```
+
+The runtime image uses a multi-stage build, a non-root UID (`10001`), an explicit Uvicorn entry point, and a health check.
+
+### Option D — Full training / MLOps environment
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements-api.txt
+pip install -r requirements.txt
 ```
 
-### Start the service
+Use this environment for the broader training, MLflow, and experiment-management surface rather than the lightweight public demo.
+
+---
+
+## Reproduce the benchmark evidence
 
 ```bash
-uvicorn src.serve.app:app --reload --host 0.0.0.0 --port 8000
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+PYTHONHASHSEED=0 python benchmarks/run_benchmark.py \
+  --iterations 500 \
+  --warmup 50 \
+  --output benchmark-results.json
 ```
 
-OpenAPI documentation:
+PowerShell:
 
-```text
-http://localhost:8000/docs
+```powershell
+$env:PYTHONHASHSEED="0"
+python benchmarks/run_benchmark.py --iterations 500 --warmup 50 --output benchmark-results.json
 ```
 
-### Endpoints
+Validate the focused evidence suite:
+
+```bash
+pytest tests/test_api.py tests/test_forecasting.py tests/test_evaluation.py -v
+```
+
+The benchmark workflow additionally verifies the fold/sample contract, a 64-character dataset fingerprint, a positive P95 latency value, and `MASE < 2.0` before retaining the JSON artifact.
+
+### Interpretation
+
+The benchmark answers: **“Is this public baseline deterministic, leakage-aware, measurable, and reproducible on the recorded synthetic protocol?”**
+
+It does not answer: **“Will this system forecast a real power grid accurately under operational distribution shift?”**
+
+That second question requires real, versioned data; explicit train/validation/test time boundaries; trained-model comparisons; probabilistic calibration; drift analysis; and domain review.
+
+---
+
+## FastAPI contract
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/` | Service identity and version |
-| `GET` | `/health` | Liveness and optional model-artifact status |
-| `GET` | `/metrics` | Prometheus metrics |
-| `POST` | `/predict` | Validated demand prediction with backend provenance |
+| `GET` | `/` | service identity/version |
+| `GET` | `/health` | liveness + model artifact availability |
+| `GET` | `/metrics` | Prometheus exposition |
+| `POST` | `/predict` | validated prediction with backend provenance |
 
-### Example request
+Example:
 
 ```bash
-curl -X POST http://localhost:8000/predict \
+curl -X POST http://127.0.0.1:8000/predict \
   -H "Content-Type: application/json" \
-  -d '{
-    "load_ma_3h": 1234.5,
-    "temperature_ma_3h": 22.1
-  }'
+  -d '{"load_ma_3h":1234.5,"temperature_ma_3h":22.1}'
 ```
 
-Example response without a mounted trained model:
+Without a mounted model artifact, the API identifies the result as:
 
 ```json
 {
@@ -310,339 +260,162 @@ Example response without a mounted trained model:
 }
 ```
 
-When `MODEL_PATH` points to a compatible serialized estimator, the API returns:
+A compatible model loaded through `MODEL_PATH` is reported as `backend=trained-model`. This provenance is deliberate: fallback output is never presented as trained-model inference.
 
-```json
-{
-  "predicted_load": 1250.3,
-  "backend": "trained-model",
-  "model_version": "1.1.0"
-}
-```
-
-The response always identifies the inference backend. The deterministic fallback is intentionally transparent and is not presented as trained-model output.
+Request fields are bounded by Pydantic contracts, and backend failures return a controlled `503` rather than exposing internal exceptions.
 
 ---
 
-## Docker
+## MLOps and deployment surface
 
-Build the API image:
+The repository contains evidence and scaffolding for:
 
-```bash
-docker build -t energy-demand-forecasting:local .
-```
+- MLflow experiment tracking and deployment configuration;
+- Dockerized service execution;
+- Kubernetes and Helm deployment manifests;
+- Compose validation;
+- Terraform / Ansible infrastructure foundations;
+- Prometheus metrics and Grafana-oriented monitoring assets;
+- GitHub Actions CI and benchmark evidence;
+- Dependabot dependency maintenance;
+- CodeQL and secret scanning;
+- Trivy filesystem/container reports;
+- `pip-audit` dependency reports;
+- CycloneDX SBOM generation;
+- semantic tag-driven GitHub Releases and GHCR publication.
 
-Run it:
-
-```bash
-docker run --rm -p 8000:8000 energy-demand-forecasting:local
-```
-
-Verify health:
-
-```bash
-curl http://localhost:8000/health
-```
-
-The image uses:
-
-- an isolated dependency-builder stage;
-- a minimal Python runtime stage;
-- a non-root user with UID `10001`;
-- an explicit Uvicorn entry point;
-- a built-in health check;
-- runtime-mounted model artifacts rather than embedding private checkpoints in the image.
+**Important security distinction:** the current Trivy and `pip-audit` jobs retain findings for review rather than failing the workflow on every HIGH/CRITICAL or dependency advisory. They are evidence-producing controls, not a complete blocking vulnerability policy.
 
 ---
 
-## Full Training Environment
+## CI and evidence contract
 
-Install the complete local training and MLOps stack:
+The main CI workflow validates:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
+- Python 3.10 and 3.11;
+- syntax compilation;
+- Ruff high-confidence correctness checks;
+- focused API/forecast/evaluation tests;
+- coverage threshold ≥ 90%;
+- JUnit + coverage artifacts;
+- Streamlit import + live health smoke test;
+- Docker build + live `/health` smoke test;
+- Compose configuration;
+- strict Helm lint + rendered manifests;
+- a release-readiness metadata contract.
 
-The full environment includes:
-
-- PyTorch;
-- Pandas and NumPy;
-- scikit-learn;
-- XGBoost;
-- Matplotlib and Seaborn;
-- Streamlit;
-- MLflow;
-- API runtime dependencies.
-
-GPU deployments should install the appropriate CUDA-specific PyTorch build for the target environment rather than relying on the default CPU-compatible wheel.
+The research workflow reruns the seeded rolling-origin benchmark on `main`, `development`, and pull requests to `main`.
 
 ---
 
-## Data Contract
+## Evidence and reproducibility matrix
 
-The lightweight forecasting service expects logically equivalent fields for:
-
-| Field | Requirement |
-|---|---|
-| Timestamp | Parseable date/time value |
-| Demand | Non-negative numeric energy-demand value |
-| History | At least 48 valid observations |
-| Seasonality | At least two full selected seasonal periods |
-
-Normalization behavior:
-
-1. Parse timestamps.
-2. Convert demand to numeric.
-3. Remove rows with invalid timestamps or demand values.
-4. Reject negative demand.
-5. Aggregate duplicate timestamps using the mean.
-6. Sort observations chronologically.
-7. Return canonical `timestamp` and `demand` columns.
-
-The Streamlit app exposes these checks as visible data-quality evidence.
+| Claim | Evidence | Reproduce / inspect | Boundary |
+|---|---|---|---|
+| API input validation | `src/serve/app.py`, API tests | `pytest tests/test_api.py -v` | does not prove load resilience |
+| Forecast determinism | forecasting/evaluation tests | focused pytest suite | synthetic/public baseline only |
+| Test coverage | CI XML + terminal report | CI / local pytest coverage | selected modules, not entire repo |
+| Rolling-origin quality | `benchmarks/latest.json` | `benchmarks/run_benchmark.py` | synthetic baseline only |
+| Runtime benchmark | benchmark JSON | same benchmark command | excludes network/UI/container overhead |
+| Container health | CI container smoke test | build/run + `/health` | smoke test, not soak test |
+| Streamlit deployability | live CI health probe | `streamlit run ...` | startup health, not UX/load SLO |
+| Helm renderability | CI lint/template | `helm lint`, `helm template` | not a live-cluster deployment test |
+| Security evidence | CodeQL/Gitleaks/Trivy/pip-audit/SBOM | security workflows | some vulnerability jobs are advisory |
+| Release traceability | semantic tag workflow | `.github/workflows/release.yml` | release success is not production approval |
 
 ---
 
-## Deterministic Baseline Forecast
+## Extended Q&A
 
-The public dashboard uses a seasonal-naive forecast because it is:
+**Why keep a deterministic fallback instead of failing when a model is absent?**  
+It keeps demos, CI, health checks, and integration development usable without pretending a trained model exists. The API always returns the backend provenance.
 
-- transparent;
-- deterministic;
-- inexpensive to run;
-- independent of external model artifacts;
-- appropriate as a baseline for evaluating more complex models.
+**Are the LSTM, GRU, and Transformer models represented by the benchmark table?**  
+No. The committed benchmark is explicitly for the seasonal-naive public baseline. Trained architectures need their own versioned datasets, split metadata, artifacts, and evaluation records.
 
-The algorithm:
+**Why is rolling-origin evaluation important?**  
+Time-series models must not train on information from the future. Expanding-window folds preserve chronology and make the evaluation protocol auditable.
 
-1. Repeats the most recent seasonal pattern.
-2. Estimates the mean shift from the previous seasonal period.
-3. Bounds the trend adjustment to reduce unstable extrapolation.
-4. Estimates uncertainty from historical seasonal residuals.
-5. Produces point forecasts plus lower and upper intervals.
+**Is MASE 1.551 “good”?**  
+It is a recorded result, not a marketing claim. Interpretation depends on the scaling baseline and target use case. This repository deliberately publishes the value rather than hiding an inconvenient metric.
 
-This baseline should be compared against trained models using time-aware backtesting before any operational use.
+**Does a green security workflow mean zero vulnerabilities?**  
+No. CodeQL and Gitleaks execute as checks, while current Trivy and `pip-audit` jobs are configured to retain reports for triage. Review the artifacts and remediation policy separately.
 
----
+**Is the repository production-ready?**  
+It demonstrates many production-oriented controls, but real-grid validation, trained-model evaluation, load/soak testing, failure injection, rollback drills, and stricter vulnerability policy are still promotion work.
 
-## Testing
-
-Install CI dependencies:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-Run the API and forecasting suite:
-
-```bash
-pytest tests/test_api.py tests/test_forecasting.py -v
-```
-
-Run with coverage:
-
-```bash
-pytest tests/test_api.py tests/test_forecasting.py -v \
-  --cov=src.serve \
-  --cov=src.forecasting \
-  --cov-report=term-missing \
-  --cov-report=html
-```
-
-Run correctness and syntax checks:
-
-```bash
-ruff check src/serve src/forecasting.py tests/test_api.py tests/test_forecasting.py streamlit_app.py streamlit_demo/app.py \
-  --select E9,F63,F7,F82
-
-python -m compileall -q src tests streamlit_app.py streamlit_demo/app.py
-```
-
-Current automated coverage includes:
-
-- API identity and health contracts;
-- optional model-artifact state;
-- deterministic fallback inference;
-- trained-model inference through a mock estimator;
-- bounded input validation;
-- invalid model output handling;
-- Prometheus metrics;
-- deterministic synthetic data;
-- timestamp sorting and duplicate aggregation;
-- missing-column and negative-demand rejection;
-- forecast shape, bounds, intervals, and reproducibility;
-- insufficient-history and invalid-horizon failures.
+**What would make the ML story materially stronger?**  
+A versioned real-world or public energy dataset, a leakage-safe comparative study across seasonal-naive/XGBoost/LSTM/GRU/Transformer candidates, confidence intervals across temporal regimes, calibration/coverage evidence, and a model card tied to exact artifacts.
 
 ---
 
-## CI/CD and Release Pipeline
+## Engineering roadmap
 
-```mermaid
-flowchart LR
-    A[Commit or Pull Request] --> B[Python 3.10 / 3.11]
-    B --> C[Compile and Ruff]
-    C --> D[API and Forecast Tests]
-    D --> E[Coverage and JUnit Evidence]
-    E --> F[Streamlit Health Smoke Test]
-    F --> G[Container Build and API Health]
-    G --> H[Release Readiness]
+### Phase 1 — Evidence discipline
 
-    A --> I[CodeQL]
-    A --> J[Gitleaks]
-    A --> K[Trivy FS and Container Reports]
-    A --> L[pip-audit]
-    A --> M[CycloneDX SBOM]
-```
+- keep all README metrics tied to committed JSON or CI artifacts;
+- record commit SHA and environment in benchmark evidence;
+- add explicit benchmark schema validation/versioning;
+- retain trained-model metadata with dataset/config/model hashes.
 
-Release tags matching `vMAJOR.MINOR.PATCH` trigger:
+### Phase 2 — Forecasting research depth
 
-- generated GitHub Release notes;
-- a source archive excluding local data and model artifacts;
-- GHCR container publishing;
-- container metadata, provenance, and SBOM generation.
+- add a versioned public real-world energy dataset;
+- compare baseline, tree-based, recurrent, and Transformer models under identical rolling-origin splits;
+- add prediction-interval coverage and calibration metrics;
+- report regime-specific error for peaks, weekends, seasonal changes, and extreme temperatures.
 
----
+### Phase 3 — Serving reliability
 
-## L6 Nine-Tier Deployment Hygiene
+- add concurrent API load tests with P50/P95/P99 latency and throughput;
+- add container resource-limit tests;
+- test model reload and corrupt-artifact failure modes;
+- add readiness semantics separate from basic liveness if trained-model availability becomes mandatory.
 
-| Tier | Engineering domain | Automated or documented evidence |
-|---|---|---|
-| 1 | Source hygiene | Typed contracts, reproducible manifests, compile and Ruff checks |
-| 2 | Test engineering | API, forecast, edge-case, failure-mode, coverage, and JUnit evidence |
-| 3 | Static quality | CodeQL, syntax validation, bounded schemas, config validation |
-| 4 | Security engineering | Gitleaks, Trivy reports, non-root runtime, disclosure process |
-| 5 | Supply-chain hygiene | Dependabot, `pip-audit`, CycloneDX SBOM, version pins |
-| 6 | Reproducible runtime | Multi-stage container, Python pin, slim API and Streamlit manifests |
-| 7 | Continuous delivery | Python matrix, Streamlit health, container health, readiness contract |
-| 8 | Release engineering | Semantic tags, GitHub Releases, GHCR, provenance, release SBOM |
-| 9 | Operational governance | Health, metrics, changelog, contribution, deployment, rollback standards |
+### Phase 4 — Security and supply-chain promotion
 
-The full control model and promotion standard are documented in [`docs/L6_DEPLOYMENT_HYGIENE.md`](docs/L6_DEPLOYMENT_HYGIENE.md).
+- define remediation SLAs by severity;
+- convert selected Trivy and dependency findings from report-only to blocking policy once the baseline is clean;
+- retain release SBOM/provenance with immutable image digests;
+- automate artifact signature verification in deployment validation.
+
+### Phase 5 — Deployment and governance
+
+- run Helm manifests against an ephemeral Kubernetes environment;
+- validate Terraform and Ansible paths in CI where practical;
+- add rollback/failure-injection evidence;
+- define model promotion, deprecation, drift response, and operational ownership criteria.
 
 ---
 
-## Repository Structure
+## Repository map
 
 ```text
-Energy-Demand-Forecasting-DevMLOps/
-├── .github/
-│   ├── workflows/
-│   │   ├── ci.yml
-│   │   ├── security.yml
-│   │   └── release.yml
-│   └── dependabot.yml
-├── .streamlit/
-│   └── config.toml
-├── config/
-│   └── config.yaml
-├── docs/
-│   ├── L6_DEPLOYMENT_HYGIENE.md
-│   └── STREAMLIT_DEPLOYMENT.md
-├── src/
-│   ├── forecasting.py
-│   ├── model.py
-│   ├── predict.py
-│   ├── data_loader.py
-│   ├── data_preprocess.py
-│   └── serve/
-│       └── app.py
-├── streamlit_demo/
-│   ├── app.py
-│   └── requirements.txt
-├── tests/
-│   ├── test_api.py
-│   ├── test_forecasting.py
-│   ├── test_metrics.py
-│   └── test_preprocess.py
-├── Dockerfile
-├── requirements-api.txt
-├── requirements-dev.txt
-├── requirements.txt
-├── streamlit_app.py
-├── SECURITY.md
-├── CONTRIBUTING.md
-├── CHANGELOG.md
-└── LICENSE
+.github/workflows/       CI, benchmarks, security, release automation
+benchmarks/              seeded research benchmark + committed evidence
+config/                  forecasting / training configuration
+docs/                    audits, deployment and engineering guidance
+helm/                    Kubernetes packaging
+k8s/                     Kubernetes deployment assets
+mlflow/                  experiment-tracking deployment assets
+src/                     forecasting, evaluation, model and serving code
+streamlit_demo/          lightweight public dashboard
+tests/                   API / forecasting / evaluation tests
+Dockerfile               multi-stage non-root API image
+requirements-api.txt     slim API dependency surface
+requirements-dev.txt     CI / benchmark dependencies
+requirements.txt         broader training / MLOps environment
 ```
 
-The repository also includes Kubernetes, Helm, Terraform, Ansible, Airflow, DVC, MLflow, Prometheus, and Grafana foundations for broader DevMLOps experimentation.
-
 ---
 
-## Security and Supply Chain
+## Scope and limitations
 
-Security controls include:
+This project is an engineering and research portfolio system. It is **not** a utility control system, dispatch engine, market-bidding engine, or evidence of commercial forecasting accuracy.
 
-- CodeQL analysis;
-- Gitleaks secret detection;
-- Trivy filesystem reports;
-- Trivy API-container reports;
-- deployment dependency audits;
-- Dependabot updates;
-- CycloneDX repository SBOMs;
-- GHCR image provenance and SBOM output;
-- non-root containers;
-- explicit secret-handling guidance.
-
-Report vulnerabilities according to [`SECURITY.md`](SECURITY.md). Do not open public issues containing credentials, private datasets, exploit details, or sensitive infrastructure information.
-
----
-
-## Operational Limitations
-
-Current constraints are documented intentionally:
-
-- The public Streamlit forecast is a deterministic baseline, not a trained production model.
-- Synthetic data is generated for demonstration and does not represent a real utility, market, region, or customer.
-- Prediction intervals are empirical baseline intervals, not calibrated probabilistic guarantees.
-- The FastAPI fallback preserves service availability but should not be confused with registered-model output.
-- Deep-learning performance depends on dataset quality, leakage controls, backtesting design, feature stability, and deployment hardware.
-- Infrastructure manifests are reference implementations and require environment-specific configuration, secrets, policies, and capacity planning.
-
----
-
-## Roadmap
-
-- Baseline-versus-model comparison dashboard.
-- Probabilistic forecasting and calibrated prediction intervals.
-- Model registry promotion policy.
-- Feature and prediction drift monitoring.
-- OpenTelemetry traces across training and serving.
-- Authenticated and versioned inference endpoints.
-- Batch prediction jobs and asynchronous processing.
-- Streamlit model-comparison and explainability views.
-- Automated model-card and data-card generation.
-- SLSA-aligned build provenance and signed release artifacts.
-
----
-
-## Engineering Principles
-
-The project prioritizes:
-
-- correctness before complexity;
-- reproducibility before optimization;
-- explicit provenance over hidden fallbacks;
-- visible validation over silent coercion;
-- automation for repeatable quality gates;
-- security throughout the development lifecycle;
-- lightweight public demonstrations separated from heavyweight training environments;
-- documentation of limitations, tradeoffs, and recovery paths.
-
----
-
-## Author
-
-**Corey Leath**  
-Software Development and AI Engineering portfolio
-
-GitHub: [CoreyLeath-code](https://github.com/CoreyLeath-code)
-
----
+Do not infer production readiness from architecture breadth alone. Promotion should be based on versioned model evidence, real deployment tests, vulnerability policy, observability, failure recovery, and domain-specific acceptance criteria.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
