@@ -1,5 +1,11 @@
 # ⚡ Energy Demand Forecasting — DevMLOps
 
+
+
+<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/5ed834a3-a98c-4a04-acfe-c166befcdc26" />
+
+
+
 Production-oriented time-series forecasting, observable inference, reproducible research evidence, and deployment automation.
 
 [![CI](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Energy-Demand-Forecasting-DevMLOps/actions/workflows/ci.yml)
