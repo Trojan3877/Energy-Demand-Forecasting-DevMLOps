@@ -2,50 +2,103 @@ name: Energy Forecasting Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
   workflow_dispatch:
     inputs:
       release_tag:
-        description: "Existing semantic version tag to publish (for example v1.2.0)"
-        required: true
+        description: "Semantic version tag to publish; leave blank to use APP_VERSION"
+        required: false
         type: string
 
 permissions:
   contents: write
   packages: write
 
-env:
-  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+concurrency:
+  group: energy-forecasting-release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  validate-release:
-    name: Validate release tag
+  prepare-release:
+    name: Prepare immutable release tag
+    if: >-
+      github.ref_type == 'tag' ||
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, '[publish-release]')
     runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.release.outputs.release_tag }}
+      release_sha: ${{ steps.release.outputs.release_sha }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout release source
+        uses: actions/checkout@v7
         with:
+          ref: ${{ github.ref_type == 'tag' && github.ref_name || 'main' }}
           fetch-depth: 0
 
-      - name: Validate semantic version and existing tag
+      - name: Resolve and create release tag when needed
+        id: release
         shell: bash
+        env:
+          INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           set -euo pipefail
-          if [[ ! "${RELEASE_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "release_tag must match vMAJOR.MINOR.PATCH" >&2
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            release_tag="${GITHUB_REF_NAME}"
+          elif [[ -n "${INPUT_RELEASE_TAG:-}" ]]; then
+            release_tag="${INPUT_RELEASE_TAG}"
+          else
+            app_version="$(python - <<'PY'
+          import re
+          from pathlib import Path
+
+          text = Path('src/serve/app.py').read_text(encoding='utf-8')
+          match = re.search(r'APP_VERSION:\s*Final\[str\]\s*=\s*"([0-9]+\.[0-9]+\.[0-9]+)"', text)
+          if not match:
+              raise SystemExit('Unable to resolve APP_VERSION from src/serve/app.py')
+          print(match.group(1))
+          PY
+          )"
+            release_tag="v${app_version}"
+          fi
+
+          if [[ ! "${release_tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Release tag must match vMAJOR.MINOR.PATCH; got ${release_tag}" >&2
             exit 1
           fi
+
           git fetch --tags --force
-          git rev-parse --verify "refs/tags/${RELEASE_TAG}^{commit}" >/dev/null
+
+          if git rev-parse --verify "refs/tags/${release_tag}^{commit}" >/dev/null 2>&1; then
+            echo "Using existing immutable tag ${release_tag}."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "${release_tag}" -m "Release ${release_tag}" HEAD
+            git push origin "refs/tags/${release_tag}"
+            echo "Created ${release_tag}."
+          fi
+
+          release_sha="$(git rev-parse "refs/tags/${release_tag}^{commit}")"
+          echo "release_tag=${release_tag}" >> "${GITHUB_OUTPUT}"
+          echo "release_sha=${release_sha}" >> "${GITHUB_OUTPUT}"
+          echo "Release target: ${release_tag} @ ${release_sha}"
 
   release-artifacts:
     name: Publish GitHub Release
-    needs: validate-release
+    needs: prepare-release
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ needs.prepare-release.outputs.release_tag }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout immutable release commit
+        uses: actions/checkout@v7
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          ref: ${{ needs.prepare-release.outputs.release_sha }}
           fetch-depth: 0
 
       - name: Build source archive and checksum
@@ -64,23 +117,39 @@ jobs:
             -czf "${archive}" .
           sha256sum "${archive}" > "${archive}.sha256"
 
-      - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: ${{ env.RELEASE_TAG }}
-          files: |
-            dist/*.tar.gz
-            dist/*.sha256
-          generate_release_notes: true
+      - name: Create or update GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "Release ${RELEASE_TAG} already exists; refreshing assets."
+          else
+            gh release create "${RELEASE_TAG}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "${RELEASE_TAG}" \
+              --generate-notes \
+              --verify-tag
+          fi
+
+          gh release upload "${RELEASE_TAG}" \
+            dist/*.tar.gz \
+            dist/*.sha256 \
+            --repo "${GITHUB_REPOSITORY}" \
+            --clobber
 
   publish-container:
-    name: Publish GHCR Image
-    needs: validate-release
+    name: Publish GHCR Package
+    needs: prepare-release
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ needs.prepare-release.outputs.release_tag }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout immutable release commit
+        uses: actions/checkout@v7
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          ref: ${{ needs.prepare-release.outputs.release_sha }}
           fetch-depth: 0
 
       - name: Resolve immutable image metadata
@@ -88,8 +157,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
-          echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "${GITHUB_OUTPUT}"
+          echo "revision=$(git rev-parse HEAD)" >> "${GITHUB_OUTPUT}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -99,7 +168,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT != '' && secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
+          password: ${{ github.token }}
 
       - name: Generate OCI metadata
         uses: docker/metadata-action@v5
