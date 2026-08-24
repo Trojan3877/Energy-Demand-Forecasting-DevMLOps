@@ -18,7 +18,7 @@ torch==2.13.0
 # Visualization and public dashboard
 matplotlib==3.11.1
 seaborn==0.13.2
-streamlit==1.49.1
+streamlit==1.62.0
 
 # MLOps and experiment tracking
 mlflow==3.15.1
